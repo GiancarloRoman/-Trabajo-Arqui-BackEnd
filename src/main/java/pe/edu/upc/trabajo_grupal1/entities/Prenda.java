@@ -1,57 +1,102 @@
-package pe.edu.upc.trabajo_grupal1.controllers;
+package pe.edu.upc.trabajo_grupal1.entities;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.trabajo_grupal1.entities.Prenda;
-import pe.edu.upc.trabajo_grupal1.serviceinterfaces.IPrendaService;
+import javax.persistence.*;
 
-import java.text.ParseException;
-import java.util.List;
-import java.util.Optional;
-
-@RestController
-@RequestMapping("/prendas")
-public class PrendaController {
-    @Autowired
-    private IPrendaService pService;
-
-    @PostMapping
-    public void registrar(@RequestBody Prenda p) {
-        pService.insert(p);
+@Entity
+@Table(name = "Prenda")
+public class Prenda {
+    public Prenda() {
     }
-    @GetMapping
-    public List<Prenda> listar() {
-        return pService.list();
-    }
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable("id") Integer id){
-        pService.delete(id);
-    }
-    @PutMapping
-    public void modificar(@RequestBody Prenda prenda){
-        pService.insert(prenda);
-    }
-  @PostMapping("/buscar")
-    public List<Prenda> buscar(@RequestBody Prenda prenda)throws ParseException {
-        List<Prenda> listaPrendas;
-        listaPrendas = pService.search(prenda.getNombrePrenda());
 
-        if (listaPrendas.isEmpty()) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idPrenda;
 
-            listaPrendas = pService.buscarTienda(prenda.getTienda().getNombreTienda());
-            if (listaPrendas.isEmpty()) {
+    @Column(name = "nombrePrenda", length = 50, nullable = false)
+    private String nombrePrenda;
 
-                listaPrendas = pService.buscarMarca(prenda.getMarca().getNombreMarca());
-            }
-            if (listaPrendas.isEmpty()) {
+    @Column(name = "colorPrenda", length = 50, nullable = false)
+    private String colorPrenda;
 
-                listaPrendas = pService.buscarTalla(prenda.getTalla().getLetraTalla());
-            }
-        }
-        return listaPrendas;
+    @Column(name = "diseñoPrenda", length = 50, nullable = false)
+    private String disenioPrenda;
+
+    @ManyToOne
+    @JoinColumn(name = "idTienda", nullable = false)
+    private Tienda tienda;
+
+    @ManyToOne
+    @JoinColumn(name = "idMarca", nullable = false)
+    private Marca marca;
+
+    @ManyToOne
+    @JoinColumn(name = "idTalla", nullable = false)
+    private Talla talla;
+
+
+    public Prenda(int idPrenda, String nombrePrenda, String colorPrenda, String disenioPrenda, Tienda tienda, Marca marca, Talla talla) {
+        this.idPrenda = idPrenda;
+        this.nombrePrenda = nombrePrenda;
+        this.colorPrenda = colorPrenda;
+        this.disenioPrenda = disenioPrenda;
+        this.tienda = tienda;
+        this.marca = marca;
+        this.talla = talla;
     }
-    @GetMapping("/{id}")
-    public Optional<Prenda> listarId(@PathVariable("id") Integer id) {
-        return pService.listarId(id);
+
+    public int getIdPrenda() {
+        return idPrenda;
+    }
+
+    public void setIdPrenda(int idPrenda) {
+        this.idPrenda = idPrenda;
+    }
+
+    public String getNombrePrenda() {
+        return nombrePrenda;
+    }
+
+    public void setNombrePrenda(String nombrePrenda) {
+        this.nombrePrenda = nombrePrenda;
+    }
+
+    public String getColorPrenda() {
+        return colorPrenda;
+    }
+
+    public void setColorPrenda(String colorPrenda) {
+        this.colorPrenda = colorPrenda;
+    }
+
+    public String getDisenioPrenda() {
+        return disenioPrenda;
+    }
+
+    public void setDisenioPrenda(String disenioPrenda) {
+        this.disenioPrenda = disenioPrenda;
+    }
+
+    public Tienda getTienda() {
+        return tienda;
+    }
+
+    public void setTienda(Tienda tienda) {
+        this.tienda = tienda;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public Talla getTalla() {
+        return talla;
+    }
+
+    public void setTalla(Talla talla) {
+        this.talla = talla;
     }
 }
