@@ -10,5 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ITiendaRepository extends JpaRepository<Tienda,Integer> {
-
+    @Query("from Tienda t where t.nombreTienda like %:nombreTienda")
+    List<Tienda> search(@Param("nombreTienda") String nombreTienda);
 }
+
