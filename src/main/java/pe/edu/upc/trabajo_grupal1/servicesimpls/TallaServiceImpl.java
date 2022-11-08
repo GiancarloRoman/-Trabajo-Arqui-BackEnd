@@ -11,5 +11,30 @@ import java.util.Optional;
 
 @Service
 public class TallaServiceImpl implements ITallaService {
+    @Autowired
+    private ITallaRepository tR;
+    @Override
+    public void insert(Talla talla) {
+        tR.save(talla);
+    }
 
+    @Override
+    public List<Talla> list() {
+        return tR.findAll();
+    }
+
+    @Override
+    public void delete(int idTalla) {
+        tR.deleteById(idTalla);
+    }
+
+    @Override
+    public Optional<Talla> listarId(int idTalla) {
+        return Optional.of(tR.findById(idTalla).orElse(new Talla()));
+    }
+
+    @Override
+    public List<Talla> search(String letraTalla) {
+        return tR.search(letraTalla);
+    }
 }
