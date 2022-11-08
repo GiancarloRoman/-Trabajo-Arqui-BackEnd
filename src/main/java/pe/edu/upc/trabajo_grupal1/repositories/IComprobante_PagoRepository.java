@@ -10,5 +10,10 @@ import java.util.List;
 
 @Repository
 public interface IComprobante_PagoRepository extends JpaRepository<Comprobante_Pago,Integer> {
+    @Query("from Comprobante_Pago cp where cp.tipoComprobante like %:tipoComprobante")
+    List<Comprobante_Pago> searchComprobante_Pago_Tipo(@Param("tipoComprobante") String tipoComprobante);
+
+    @Query("from Comprobante_Pago cp where cp.razonsocial like %:razonsocial")
+    List<Comprobante_Pago> searchComprobante_Pago_Razon(@Param("razonsocial") String razonsocial);
 
 }
