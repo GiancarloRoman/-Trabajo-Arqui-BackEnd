@@ -9,5 +9,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
+    @Autowired
+    private IClienteService cService;
 
+    @PostMapping
+    public void registrar(@RequestBody Cliente c) {
+        cService.insert(c);
+    }
+    @GetMapping
+    public List<Cliente> listar() {
+        return cService.list();
+    }
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable("id") Integer id){
+        cService.delete(id);
+    }
+    @PutMapping
+    public void modificar(@RequestBody Cliente cliente){
+        cService.insert(cliente);
+    }
+    @PostMapping("/buscar")
+    public List<Cliente> buscar(@RequestBody Cliente cliente){
+        List<Cliente> lista;
+        cliente.setNombreCliente(cliente.getNombreCliente());
+        lista=cService.search(cliente.getNombreCliente());
+        return lista;
+    }
 }
