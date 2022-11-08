@@ -11,5 +11,7 @@ import java.util.List;
 @Repository
 public interface ICarrito_ComprasRepository extends JpaRepository<Carrito_Compras,Integer> {
 
-
+    @Query("from Carrito_Compras cp where cp.prenda.nombrePrenda like %:nombrePrenda")
+    List<Carrito_Compras> searchPrenda(@Param("nombrePrenda") String nombrePrenda);
 }
+
