@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface IMarcaRepository extends JpaRepository<Marca,Integer> {
-
+    @Query("from Marca m where m.nombreMarca like %:nombreMarca")
+    List<Marca> search(@Param("nombreMarca") String nombreMarca);
 }
