@@ -13,4 +13,46 @@ import java.util.Optional;
 @RequestMapping("/prendas")
 public class PrendaController {
 
+@Autowired
+    private IPrendaService pService;
+
+    @PostMapping
+    public void registrar(@RequestBody Prenda p) {
+        pService.insert(p);
+    }
+    @GetMapping
+    public List<Prenda> listar() {
+        return pService.list();
+    }
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable("id") Integer id){
+        pService.delete(id);
+    }
+    @PutMapping
+    public void modificar(@RequestBody Prenda prenda){
+        pService.insert(prenda);
+    }
+    @PostMapping("/buscar")
+    public List<Prenda> buscar(@RequestBody Prenda prenda)throws ParseException {
+        List<Prenda> listaPrendas;
+        listaPrendas = pService.search(prenda.getNombrePrenda());
+      
+      if (listaPrendas.isEmpty()) {
+
+            listaPrendas = pService.buscarTienda(prenda.getTienda().getNombreTienda());
+            if (listaPrendas.isEmpty()) {
+
+                listaPrendas = pService.buscarMarca(prenda.getMarca().getNombreMarca());
+            }
+            if (listaPrendas.isEmpty()) {
+
+                listaPrendas = pService.buscarTalla(prenda.getTalla().getLetraTalla());
+            }
+        }
+        return listaPrendas;
+    }
+    @GetMapping("/{id}")
+    public Optional<Prenda> listarId(@PathVariable("id") Integer id) {
+        return pService.listarId(id);
+    }
 }
